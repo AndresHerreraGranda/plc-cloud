@@ -1,37 +1,42 @@
-from pymodbus.client.sync import ModbusTcpClient
+from pymodbus.client import ModbusTcpClient
+import logging
 import time
 
-# Configura la IP y el puerto del servidor Modbus TCP (Windows)
-MODBUS_SERVER_IP = '192.168.1.50'  # Cambia esto por la IP real de tu máquina Windows
-MODBUS_PORT = 502  # Usa 1502 si configuraste un puerto alternativo
-UNIT_ID = 1        # ID del esclavo (usualmente 1 por defecto)
-ADDRESS = 0        # Dirección inicial del registro a leer
-COUNT = 10         # Cuántos registros leer
+# Configurar logs opcionalmente
+logging.basicConfig()
+log = logging.getLogger()
+log.setLevel(logging.WARNING)
+
+# Parámetros
+MODBUS_SERVER_IP = '192.168.1.100'  # Cambia por la IP real
+MODBUS_PORT = 502
+UNIT_ID = 1
+ADDRESS = 0
+COUNT = 10
 INTERVAL_SECONDS = 2
 
-# Crear el cliente Modbus
-client = ModbusTcpClient(MODBUS_SERVER_IP, port=MODBUS_PORT, timeout=3)
+# Crear cliente
+client = ModbusTcpClient(host=MODBUS_SERVER_IP, port=MODBUS_PORT)
 
 try:
-    if client.connect():
-        print(f"✅ Conectado a {MODBUS_SERVER_IP}:{MODBUS_PORT} correctamente")
+    connection = client.connect()
+    if connection:
+        print("✅ Conectado exitosamente al servidor Modbus")
 
         while True:
-            # Leer registros holding
-            result = client.read_holding_registers(ADDRESS, COUNT, unit=UNIT_ID)
+            result = client.read_holding_registers(address=ADDRESS, count=COUNT, unit=UNIT_ID)
 
             if not result.isError():
-                print(f"📥 Registros leídos desde dirección {ADDRESS}: {result.registers}")
+                print(f"📥 Registros leídos: {result.registers}")
             else:
                 print(f"⚠️ Error al leer registros: {result}")
 
             time.sleep(INTERVAL_SECONDS)
-
     else:
-        print(f"❌ No se pudo conectar al servidor Modbus en {MODBUS_SERVER_IP}:{MODBUS_PORT}")
+        print("❌ No se pudo conectar al servidor Modbus")
 
 except KeyboardInterrupt:
-    print("\n⏹️ Lectura interrumpida por el usuario")
+    print("\n⏹️ Lectura detenida por el usuario")
 
 finally:
     client.close()
