@@ -13,8 +13,8 @@ COUNT = 10
 INTERVAL_SECONDS = 5
 
 # Supabase configuración
-SUPABASE_URL = "https://xxxxxxxx.supabase.co"
-SUPABASE_KEY = "eyJhbGciOi..."  # Usa tu clave real
+SUPABASE_URL = "https://jzsmavfiptmpjaxarbhc.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6c21hdmZpcHRtcGpheGFyYmhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5NjAxODEsImV4cCI6MjA2NjUzNjE4MX0.u38v2fHOfpHFpo0L14Tn5RJvzxR6-sZ0DmRDKLTHtx" 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Configurar logs
